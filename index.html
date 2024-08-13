@@ -57,54 +57,45 @@
             text-align: center;
             font-weight: bold;
         }
+        iframe {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Food Tracker</h1>
-        <form id="foodForm">
-            <label for="food">What did you have?</label>
-            <textarea id="food" name="food" rows="4" required></textarea>
+        <form id="foodForm" target="hidden_iframe" onsubmit="submitted=true;">
+            <label for="entry.1320953962">What did you have?</label>
+            <textarea id="entry.1320953962" name="entry.1320953962" rows="4" required></textarea>
             <button type="submit">Submit</button>
         </form>
         <div id="message"></div>
     </div>
 
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {onFormSubmit();}"></iframe>
+
     <script>
+        var submitted = false;
         const form = document.getElementById('foodForm');
         const message = document.getElementById('message');
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const formData = new FormData(form);
+        function onFormSubmit() {
+            message.textContent = 'Submitted successfully!';
+            form.reset();
+            submitted = false;
             
-            const googleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSfPZH5_bXE6nVbAfOmKUNDzPp09Bp5JjbGzAIXzP5N9RcssBw/formResponse';
-            
-            const data = new URLSearchParams();
-            data.append('entry.1320953962', formData.get('food'));
+            // Option to add another entry
+            setTimeout(() => {
+                if (confirm('Do you want to add another entry?')) {
+                    message.textContent = '';
+                } else {
+                    window.close();
+                }
+            }, 1000);
+        }
 
-            try {
-                const response = await fetch(googleFormUrl, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: data
-                });
-                
-                message.textContent = 'Submitted successfully!';
-                form.reset();
-                
-                // Option to add another entry
-                setTimeout(() => {
-                    if (confirm('Do you want to add another entry?')) {
-                        message.textContent = '';
-                    } else {
-                        window.close();
-                    }
-                }, 1000);
-            } catch (error) {
-                message.textContent = 'Error submitting form. Please try again.';
-            }
-        });
+        form.action = 'https://docs.google.com/forms/d/e/1FAIpQLSfPZH5_bXE6nVbAfOmKUNDzPp09Bp5JjbGzAIXzP5N9RcssBw/formResponse';
     </script>
 </body>
 </html>
