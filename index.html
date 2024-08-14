@@ -78,8 +78,8 @@
 <body>
     <div class="container">
         <h1>Log your food here</h1>
-        <form id="myForm" action="https://docs.google.com/forms/d/e/1FAIpQLSfPZH5_bXE6nVbAfOmKUNDzPp09Bp5JjbGzAIXzP5N9RcssBw/formResponse" method="post" target="hidden_iframe" onsubmit="handleSubmit(event)">
-            <textarea name="entry.1320953962" placeholder="Type or talk here..." required></textarea>
+        <form id="myForm" action="https://docs.google.com/forms/d/e/19u-knm-lNsg4zjaI52QCJxbngwp8btxaMB3FDxgH5Zg/formResponse" method="post" target="hidden_iframe" onsubmit="handleSubmit(event)">
+            <textarea name="entry.349082744" placeholder="Type or talk here..." required></textarea>
             <button type="submit">Submit</button>
         </form>
         <iframe name="hidden_iframe" style="display:none;"></iframe>
@@ -88,9 +88,8 @@
         function handleSubmit(event) {
             event.preventDefault();
             var form = document.getElementById('myForm');
-            form.submit(); // Submit the form to the hidden iframe
-            alert('Your response has been submitted.');
             form.reset();  // Clear the form fields
+            alert('Your response has been submitted.');
         }
     </script>
 </body>
