@@ -78,7 +78,7 @@
 <body>
     <div class="container">
         <h1>Log your food here</h1>
-        <form id="myForm" action="https://docs.google.com/forms/d/e/1FAIpQLSfPZH5_bXE6nVbAfOmKUNDzPp09Bp5JjbGzAIXzP5N9RcssBw/formResponse" method="post" target="hidden_iframe" onsubmit="submitted=true;">
+        <form id="myForm" action="https://docs.google.com/forms/d/e/1FAIpQLSfPZH5_bXE6nVbAfOmKUNDzPp09Bp5JjbGzAIXzP5N9RcssBw/formResponse" method="post" target="hidden_iframe">
             <textarea name="entry.1320953962" placeholder="Type or talk here..." required></textarea>
             <button type="submit">Submit</button>
         </form>
@@ -87,10 +87,36 @@
     <script>
         var submitted = false;
         var form = document.getElementById('myForm');
-        form.addEventListener('submit', function() {
+        form.addEventListener('submit', function(event) {
             if (submitted) {
                 alert('Your response has been submitted.');
                 form.reset();  // Clear the form fields
+            }
+        });
+        form.addEventListener('submit', function(event) {
+            // Prevent default form submission
+            event.preventDefault();
+            
+            var iframe = document.querySelector('iframe[name="hidden_iframe"]');
+
+            // Check if iframe is available
+            if (iframe) {
+                // Create a new form data object
+                var formData = new FormData(form);
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', form.action, true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        alert('Your response has been submitted.');
+                        form.reset(); // Clear the form fields
+                    } else {
+                        alert('Failed to submit form.');
+                    }
+                };
+                xhr.send(new URLSearchParams(formData).toString());
+            } else {
+                alert('Form submission failed.');
             }
         });
     </script>
